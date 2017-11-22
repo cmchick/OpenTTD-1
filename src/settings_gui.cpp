@@ -1591,6 +1591,7 @@ static SettingsContainer &GetSettingsTree()
 		SettingsPage *accounting = main->Add(new SettingsPage(STR_CONFIG_SETTING_ACCOUNTING));
 		{
 			accounting->Add(new SettingEntry("economy.inflation"));
+			accounting->Add(new SettingEntry("economy.day_length_factor"));
 			accounting->Add(new SettingEntry("difficulty.initial_interest"));
 			accounting->Add(new SettingEntry("difficulty.max_loan"));
 			accounting->Add(new SettingEntry("difficulty.subsidy_multiplier"));
@@ -1722,6 +1723,7 @@ static SettingsContainer &GetSettingsTree()
 
 			environment->Add(new SettingEntry("station.modified_catchment"));
 			environment->Add(new SettingEntry("construction.extra_tree_placement"));
+			environment->Add(new SettingEntry("construction.tree_growth_rate"));
 		}
 
 		SettingsPage *ai = main->Add(new SettingsPage(STR_CONFIG_SETTING_AI));

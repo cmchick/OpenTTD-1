@@ -263,7 +263,18 @@
  *  193   26802
  *  194   26881   1.5.x, 1.6.x
  */
-extern const uint16 SAVEGAME_VERSION = 194; ///< Current savegame version of OpenTTD.
+ 
+ /*
+ *
+ *  200   26694   reddit v4.0 (and other patches using true-daylength)
+ *
+ *  Starting a new version way out for future patches 
+ *  since normal release cycle is getting close to the previous ceiling..
+ *
+ *  1005  27534   reddit v5.0
+ */
+ 
+extern const uint16 SAVEGAME_VERSION = 1005; ///< Current savegame version of OpenTTD.
 
 SavegameType _savegame_type; ///< type of savegame we are loading
 

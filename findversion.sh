@@ -144,4 +144,8 @@ if [ -n "$BRANCH" ]; then
 	REV="${REV}-$BRANCH"
 fi
 
+# Override version for Reddit patch pack (revision is limited to 14 chars)
+
+REV="reddit-v5.0"
+
 echo "$REV	$REV_NR	$MODIFIED	$CLEAN_REV"

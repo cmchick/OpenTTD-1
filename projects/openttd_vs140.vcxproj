@@ -373,6 +373,7 @@
     <ClCompile Include="..\src\network\network_udp.cpp" />
     <ClCompile Include="..\src\openttd.cpp" />
     <ClCompile Include="..\src\order_backup.cpp" />
+    <ClCompile Include="..\src\overlay_cmd.cpp" />
     <ClCompile Include="..\src\pbs.cpp" />
     <ClCompile Include="..\src\progress.cpp" />
     <ClCompile Include="..\src\rail.cpp" />
@@ -448,6 +449,8 @@
     <ClInclude Include="..\src\date_gui.h" />
     <ClInclude Include="..\src\date_type.h" />
     <ClInclude Include="..\src\debug.h" />
+    <ClInclude Include="..\src\overlay.h" />
+    <ClInclude Include="..\src\overlay_cmd.h" />
     <ClInclude Include="..\src\video\dedicated_v.h" />
     <ClInclude Include="..\src\depot_base.h" />
     <ClInclude Include="..\src\depot_func.h" />

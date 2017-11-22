@@ -321,6 +321,8 @@ Function DetermineSVNVersion()
 		If branch <> "" Then
 			version = version & "-" & branch
 		End If
+        
+        version = "reddit-v5.0"
 
 		If version <> "norev000" Then
 			DetermineSVNVersion = version & Chr(9) & revision & Chr(9) & modified & Chr(9) & clean_rev

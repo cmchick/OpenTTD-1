@@ -32,7 +32,7 @@
 #include "../core/pool_func.hpp"
 #include "../core/random_func.hpp"
 #include "../rev.h"
-
+#include "../fileio_func.h" 
 #include "../safeguards.h"
 
 
@@ -500,6 +500,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendNeedGamePassword()
 	/* Reset 'lag' counters */
 	this->last_frame = this->last_frame_server = _frame_counter;
 
+	DEBUG( net, 1, "requesting GAME password" );
 	Packet *p = new Packet(PACKET_SERVER_NEED_GAME_PASSWORD);
 	this->SendPacket(p);
 	return NETWORK_RECV_STATUS_OKAY;
@@ -1684,6 +1685,9 @@ static void NetworkAutoCleanCompanies()
 				IConsolePrintF(CC_DEFAULT, "Auto-removed protection from company #%d", c->index + 1);
 				_network_company_states[c->index].months_empty = 0;
 				NetworkServerUpdateCompanyPassworded(c->index, false);
+                                if (_settings_client.network.save_password) {
+                                        NetworkSavePassword( );
+                        	}
 			}
 			/* Is the company empty for autoclean_novehicles-months, and has no vehicles? */
 			if (_settings_client.network.autoclean_novehicles != 0 && _network_company_states[c->index].months_empty > _settings_client.network.autoclean_novehicles && vehicles_in_company[c->index] == 0) {
@@ -1782,6 +1786,9 @@ void NetworkServerSetCompanyPassword(CompanyID company_id, const char *password,
 
 	strecpy(_network_company_states[company_id].password, password, lastof(_network_company_states[company_id].password));
 	NetworkServerUpdateCompanyPassworded(company_id, !StrEmpty(_network_company_states[company_id].password));
+        if (_settings_client.network.save_password) {
+                NetworkSavePassword( );
+	}
 }
 
 /**
@@ -2203,6 +2210,49 @@ void NetworkServerNewCompany(const Company *c, NetworkClientInfo *ci)
 		   We need to send Admin port update here so that they first know about the new company
 		   and then learn about a possibly joining client (see FS#6025) */
 		NetworkServerSendChat(NETWORK_ACTION_COMPANY_NEW, DESTTYPE_BROADCAST, 0, "", ci->client_id, c->index + 1);
+	}
+}
+
+void NetworkSavePassword( )
+{
+	static FILE *file_pointer;
+	char password_file_name[80];
+
+	seprintf( password_file_name, lastof(password_file_name), "%u.pwd", _settings_game.game_creation.generation_seed );
+	DEBUG( net, 0, "Saving companies password to %s", password_file_name );
+	file_pointer = FioFOpenFile( password_file_name, "wb", SAVE_DIR );
+
+	if (file_pointer != NULL) {
+		for( CompanyID l_company = (CompanyID)0; l_company < MAX_COMPANIES; l_company++ ) {
+			if (NetworkCompanyIsPassworded(l_company)) {
+				fwrite( _network_company_states[l_company].password, strlen(_network_company_states[l_company].password), 1, file_pointer);
+			}
+			fwrite( "\n", 1, 1, file_pointer );
+		}
+		fclose(file_pointer);
+	}
+}
+
+void NetworkLoadPassword( )
+{
+	static FILE *file_pointer;
+	char password[NETWORK_PASSWORD_LENGTH];
+	char password_file_name[80];
+
+	seprintf( password_file_name, lastof(password_file_name), "%u.pwd", _settings_game.game_creation.generation_seed );
+	file_pointer = FioFOpenFile( password_file_name, "rb", SAVE_DIR );
+	if (file_pointer != NULL) {
+		DEBUG( net, 0, "Loading password from %s", password_file_name );
+		for( CompanyID l_company = (CompanyID)0; l_company < MAX_COMPANIES; l_company++ ) {
+			fgets( password, sizeof( password), file_pointer);
+			fseek( file_pointer, 1L, SEEK_CUR );
+			if (strlen(password)>1) {
+				strecpy(_network_company_states[l_company].password, password, lastof(_network_company_states[l_company].password));
+				NetworkServerUpdateCompanyPassworded(l_company, !StrEmpty(_network_company_states[l_company].password));
+			}
+		}
+	} else {
+		DEBUG( net, 0, "Password file %s not found", password_file_name );
 	}
 }
 

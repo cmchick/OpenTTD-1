@@ -3042,9 +3042,20 @@
     <ClCompile Include="..\src\thread\thread_win32.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\overlay_cmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\media\openttd.ico" />
     <None Include="..\readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\overlay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\overlay_cmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
