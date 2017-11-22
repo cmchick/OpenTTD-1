@@ -545,7 +545,7 @@ int VideoDriver_SDL::PollEvent()
 
 	switch (ev.type) {
 		case SDL_MOUSEMOTION:
-			if (_cursor.UpdateCursorPosition(ev.motion.x, ev.motion.y, true)) {
+			if (_cursor.UpdateCursorPosition(ev.motion.x, ev.motion.y, false)) {
 				SDL_CALL SDL_WarpMouse(_cursor.pos.x, _cursor.pos.y);
 			}
 			HandleMouseEvents();
