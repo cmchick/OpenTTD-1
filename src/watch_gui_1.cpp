@@ -14,7 +14,6 @@
 #include "strings_func.h"
 #include "zoom_func.h"
 #include "map_func.h"
-#include "base64.h"
 #include "error.h"
 
 #include "industry.h"
