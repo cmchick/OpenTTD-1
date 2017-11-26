@@ -84,6 +84,7 @@
 #include "waypoint_func.h"
 #include "window_func.h"
 #include "tilehighlight_func.h"
+#include "zoning.h"
 #include "window_gui.h"
 #include "linkgraph/linkgraph_gui.h"
 #include "viewport_sprite_sorter.h"
@@ -1234,7 +1235,10 @@ static void ViewportAddLandscape()
 				_vd.last_foundation_child[1] = NULL;
 
 				_tile_type_procs[tile_type]->draw_tile_proc(&tile_info);
-				if (tile_info.tile != INVALID_TILE) DrawTileSelection(&tile_info);
+                                if (tile_info.tile != INVALID_TILE) {
+                                        DrawTileSelection(&tile_info);
+                                        DrawTileZoning(&tile_info);
+                                }
 			}
 		}
 	}
@@ -1289,8 +1293,7 @@ static void ViewportAddTownNames(DrawPixelInfo *dpi)
 	const Town *t;
 	FOR_ALL_TOWNS(t) {
 		ViewportAddString(dpi, ZOOM_LVL_OUT_16X, &t->cache.sign,
-				_settings_client.gui.population_in_label ? STR_VIEWPORT_TOWN_POP : STR_VIEWPORT_TOWN,
-				STR_VIEWPORT_TOWN_TINY_WHITE, STR_VIEWPORT_TOWN_TINY_BLACK,
+				t->Label(), t->SmallLabel(), STR_VIEWPORT_TOWN_TINY_BLACK,
 				t->index, t->cache.population);
 	}
 }
@@ -2236,7 +2239,8 @@ bool HandleViewportClicked(const ViewPort *vp, int x, int y, bool double_click)
 		if (IsCompanyBuildableVehicleType(v)) {
 			v = v->First();
 			if (_ctrl_pressed && v->owner == _local_company) {
-				StartStopVehicle(v, true);
+				if (_settings_client.gui.enable_ctrl_click_start_stop )
+					StartStopVehicle(v, true);
 			} else {
 				ShowVehicleViewWindow(v);
 			}
@@ -2457,6 +2461,9 @@ void UpdateTileSelection()
 			if (!new_diagonal) {
 				_thd.new_size.x += TILE_SIZE;
 				_thd.new_size.y += TILE_SIZE;
+			}
+			if (_thd.place_mode & HT_POLY) {
+				CalcNewPolylineOutersize();
 			}
 			new_drawstyle = _thd.next_drawstyle;
 		}

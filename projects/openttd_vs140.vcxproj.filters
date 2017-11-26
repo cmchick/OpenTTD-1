@@ -3042,6 +3042,24 @@
     <ClCompile Include="..\src\thread\thread_win32.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\triphistory_cmd.cpp">
+      <Filter>Command handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cargo_table_gui.cpp">
+      <Filter>GUI Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\triphistory_gui.cpp">
+      <Filter>GUI Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\watch_gui_1.cpp">
+      <Filter>GUI Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\zoning_gui.cpp">
+      <Filter>GUI Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\zoning_cmd.cpp">
+      <Filter>Command handlers</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\overlay_cmd.cpp">
       <Filter>Command handlers</Filter>
     </ClCompile>
@@ -3056,6 +3074,21 @@
     </ClInclude>
     <ClInclude Include="..\src\overlay_cmd.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cargo_table_gui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\triphistory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\watch_gui_1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\zoning.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\widgets\cargo_table_widget.h">
+      <Filter>Widgets</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

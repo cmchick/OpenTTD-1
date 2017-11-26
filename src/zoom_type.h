@@ -32,7 +32,7 @@ enum ZoomLevel {
 	ZOOM_LVL_COUNT = ZOOM_LVL_END - ZOOM_LVL_BEGIN, ///< Number of zoom levels.
 
 	/* Here we define in which zoom viewports are */
-	ZOOM_LVL_VIEWPORT = ZOOM_LVL_OUT_4X, ///< Default zoom level for viewports.
+	ZOOM_LVL_VIEWPORT = ZOOM_LVL_OUT_8X, ///< Default zoom level for viewports.
 	ZOOM_LVL_NEWS     = ZOOM_LVL_OUT_4X, ///< Default zoom level for the news messages.
 	ZOOM_LVL_INDUSTRY = ZOOM_LVL_OUT_8X, ///< Default zoom level for the industry view.
 	ZOOM_LVL_TOWN     = ZOOM_LVL_OUT_8X, ///< Default zoom level for the town view.

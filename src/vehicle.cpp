@@ -221,6 +221,14 @@ uint Vehicle::Crash(bool flooded)
 	return RandomRange(pass + 1); // Randomise deceased passengers.
 }
 
+bool Vehicle::IsDrawn() const
+{
+	return !(this->vehstatus & VS_HIDDEN) ||
+			(IsTransparencySet(TO_TUNNELS) &&
+				((this->type == VEH_TRAIN && Train::From(this)->track == TRACK_BIT_WORMHOLE) ||
+				(this->type == VEH_ROAD && RoadVehicle::From(this)->state == RVSB_WORMHOLE)));
+}
+
 
 /**
  * Displays a "NewGrf Bug" error message for a engine, and pauses the game if not networking.
@@ -785,6 +793,8 @@ void Vehicle::PreDestructor()
 		DeleteWindowById(WC_VEHICLE_REFIT, this->index);
 		DeleteWindowById(WC_VEHICLE_DETAILS, this->index);
 		DeleteWindowById(WC_VEHICLE_TIMETABLE, this->index);
+		DeleteWindowById(WC_VEHICLE_TRIP_HISTORY, this->index);
+		SetWindowDirty(WC_VEHICLE_TRIP_HISTORY, this->index);
 		SetWindowDirty(WC_COMPANY, this->owner);
 		OrderBackup::ClearVehicle(this);
 	}
@@ -809,7 +819,7 @@ Vehicle::~Vehicle()
 
 	/* sometimes, eg. for disaster vehicles, when company bankrupts, when removing crashed/flooded vehicles,
 	 * it may happen that vehicle chain is deleted when visible */
-	if (!(this->vehstatus & VS_HIDDEN)) this->MarkAllViewportsDirty();
+	if (this->IsDrawn()) this->MarkAllViewportsDirty();
 
 	Vehicle *v = this->Next();
 	this->SetNext(NULL);
@@ -1013,7 +1023,7 @@ static void DoDrawVehicle(const Vehicle *v)
 	if (v->vehstatus & VS_DEFPAL) pal = (v->vehstatus & VS_CRASHED) ? PALETTE_CRASH : GetVehiclePalette(v);
 
 	/* Check whether the vehicle shall be transparent due to the game state */
-	bool shadowed = (v->vehstatus & VS_SHADOW) != 0;
+	bool shadowed = (v->vehstatus & (VS_SHADOW | VS_HIDDEN));
 
 	if (v->type == VEH_EFFECT) {
 		/* Check whether the vehicle shall be transparent/invisible due to GUI settings.
@@ -1064,7 +1074,7 @@ void ViewportAddVehicles(DrawPixelInfo *dpi)
 			const Vehicle *v = _vehicle_viewport_hash[x + y]; // already masked & 0xFFF
 
 			while (v != NULL) {
-				if (!(v->vehstatus & VS_HIDDEN) &&
+				if (v->IsDrawn() &&
 						l <= v->coord.right &&
 						t <= v->coord.bottom &&
 						r >= v->coord.left &&
@@ -1099,7 +1109,7 @@ Vehicle *CheckClickOnVehicle(const ViewPort *vp, int x, int y)
 	y = ScaleByZoom(y, vp->zoom) + vp->virtual_top;
 
 	FOR_ALL_VEHICLES(v) {
-		if ((v->vehstatus & (VS_HIDDEN | VS_UNCLICKABLE)) == 0 &&
+		if (v->IsDrawn() && !(v->vehstatus & VS_UNCLICKABLE) &&
 				x >= v->coord.left && x <= v->coord.right &&
 				y >= v->coord.top && y <= v->coord.bottom) {
 
