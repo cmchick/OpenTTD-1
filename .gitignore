@@ -27,6 +27,8 @@ media/openttd.desktop.install
 objs/*
 projects/Debug
 projects/Release
+projects/.vs/
+projects/*.db
 projects/*.ncb
 projects/*.suo
 projects/*.sdf
