@@ -747,7 +747,7 @@ static LRESULT CALLBACK WndProcGdi(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 				SetTimer(hwnd, TID_POLLMOUSE, MOUSE_POLL_DELAY, (TIMERPROC)TrackMouseTimerProc);
 			}
 
-			if (_cursor.UpdateCursorPosition(x, y, true)) {
+			if (_cursor.UpdateCursorPosition(x, y, false)) {
 				pt.x = _cursor.pos.x;
 				pt.y = _cursor.pos.y;
 				ClientToScreen(hwnd, &pt);
