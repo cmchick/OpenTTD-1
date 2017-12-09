@@ -1542,7 +1542,7 @@ class NWidgetMainToolbarContainer : public NWidgetToolbarContainer {
 			0,  1,  3,  4,  7,  8,  9, 12, 14, 27, 21, 22, 23, 24, 25, 10, 28, 19, 20, 29,
 		};
 		static const byte arrange_all[] = {
-			0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28
+			0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29
 		};
 
 		/* If at least BIGGEST_ARRANGEMENT fit, just spread all the buttons nicely */
@@ -1944,7 +1944,7 @@ static NWidgetBase *MakeMainToolbar(int *biggest_index)
 		SPR_IMG_SUBSIDIES,       // WID_TN_SUBSIDIES
 		SPR_IMG_COMPANY_LIST,    // WID_TN_STATIONS
 		SPR_IMG_COMPANY_FINANCE, // WID_TN_FINANCES
-		SPR_REFIT_VEHICLE,          // WID_TN_CARGOS
+		SPR_REFIT_VEHICLE,       // WID_TN_CARGOS
 		SPR_IMG_COMPANY_GENERAL, // WID_TN_COMPANIES
 		SPR_IMG_STORY_BOOK,      // WID_TN_STORY
 		SPR_IMG_GOAL,            // WID_TN_GOAL
@@ -1971,7 +1971,7 @@ static NWidgetBase *MakeMainToolbar(int *biggest_index)
 	NWidgetMainToolbarContainer *hor = new NWidgetMainToolbarContainer();
 	for (uint i = 0; i < WID_TN_END; i++) {
 		switch (i) {
-			case 4: case 8: case 15: case 19: case 21: case 26: hor->Add(new NWidgetSpacer(0, 0)); break;
+			case 4: case 8: case 16: case 20: case 22: case 27: hor->Add(new NWidgetSpacer(0, 0)); break;
 		}
 		hor->Add(new NWidgetLeaf(i == WID_TN_SAVE ? WWT_IMGBTN_2 : WWT_IMGBTN, COLOUR_GREY, i, toolbar_button_sprites[i], STR_TOOLBAR_TOOLTIP_PAUSE_GAME + i));
 	}
@@ -2325,14 +2325,5 @@ void AllocateToolbar()
 		new ScenarioEditorToolbarWindow(&_toolb_scen_desc);
 	} else {
 		new MainToolbarWindow(&_toolb_normal_desc);
-		ShowSmallMap();
-#ifdef ENABLE_NETWORK
-	if (_networking) { //extra windows upon join
-		ShowClientList();
-		if(_current_company != COMPANY_SPECTATOR) {
-			ShowGoalsList(_current_company);
-		};
-	}
-#endif /* ENABLE_NETWORK */
 	}
 }
