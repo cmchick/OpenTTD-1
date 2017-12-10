@@ -51,9 +51,9 @@ struct TripHistory {
 	/**
 	 * Init info for GUI
 	 *
-	 * @return size_t number of valid rows
+	 * @return uint number of valid rows
 	 */
-	size_t UpdateCalculated( );
+	uint UpdateCalculated( );
 
 	int32 FindPercentChange( Money v1, Money v2 ) {
 		float temp;

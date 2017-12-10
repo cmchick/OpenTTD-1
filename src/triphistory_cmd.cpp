@@ -26,7 +26,7 @@ TripHistory::NewRound( ) {
 	//t.push_front( TripHistoryEntry( ) );
 }
 
-size_t
+uint
 TripHistory::UpdateCalculated( ) {
 
 	this->total_profit = 0;
