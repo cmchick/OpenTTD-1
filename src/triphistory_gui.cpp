@@ -59,7 +59,7 @@ static const NWidgetPart _vehicle_trip_history_widgets[] = {
 struct VehicleTripHistoryWindow : Window {
 
 private:
-	uint8 valid_rows; // number of rows in trip history
+	uint valid_rows; // number of rows in trip history
 public:
 	VehicleTripHistoryWindow(WindowDesc *desc, WindowNumber window_number) :
 		Window(desc), valid_rows( 0 )
@@ -131,7 +131,7 @@ public:
 		
 		switch( widget ) {
 		    case VTH_MATRIX_RECEIVED:
-			    for(int i = 0; i <= valid_rows; i++, y += FONT_HEIGHT_NORMAL + WD_MATRIX_TOP + WD_MATRIX_BOTTOM) {
+			    for(uint i = 0; i <= valid_rows; i++, y += FONT_HEIGHT_NORMAL + WD_MATRIX_TOP + WD_MATRIX_BOTTOM) {
 				    if (v->trip_history.t[i].date > 0) {
 					    SetDParam(0, v->trip_history.t[i].date);
 					    DrawString(r.left + WD_MATRIX_LEFT, r.right - WD_MATRIX_RIGHT, r.top + y, STR_TRIP_HISTORY_DATE, TC_BLACK, SA_RIGHT);
@@ -139,7 +139,7 @@ public:
 			    }
 			    break;
 		    case VTH_MATRIX_PROFIT:
-			    for(int i = 0; i <= valid_rows; i++, y += FONT_HEIGHT_NORMAL + WD_MATRIX_TOP + WD_MATRIX_BOTTOM) {
+			    for(uint i = 0; i <= valid_rows; i++, y += FONT_HEIGHT_NORMAL + WD_MATRIX_TOP + WD_MATRIX_BOTTOM) {
 				    if (v->trip_history.t[i].date > 0) {
 					    if ( v->trip_history.t[i].profit > 0 ) {
 						    SetDParam(0, v->trip_history.t[i].profit );
@@ -152,7 +152,7 @@ public:
 			    }
 			    break;
 		    case VTH_MATRIX_PERCHANGE:
-			    for(int i = 0; i <= valid_rows; i++, y += FONT_HEIGHT_NORMAL + WD_MATRIX_TOP + WD_MATRIX_BOTTOM) {
+			    for(uint i = 0; i <= valid_rows; i++, y += FONT_HEIGHT_NORMAL + WD_MATRIX_TOP + WD_MATRIX_BOTTOM) {
 				    if (v->trip_history.t[i+1].date > 0) {
 					    SetDParam(0, v->trip_history.t[i].profit_change);
 					    DrawString(r.left + WD_MATRIX_LEFT, r.right - WD_MATRIX_RIGHT, r.top + y,
@@ -164,7 +164,7 @@ public:
 			    }
 			    break;
 		    case VTH_MATRIX_TBT:
-			    for(int i = 0; i <= valid_rows; i++, y += FONT_HEIGHT_NORMAL + WD_MATRIX_TOP + WD_MATRIX_BOTTOM) {
+			    for(uint i = 0; i <= valid_rows; i++, y += FONT_HEIGHT_NORMAL + WD_MATRIX_TOP + WD_MATRIX_BOTTOM) {
 				    if (v->trip_history.t[i].date > 0) {
 					    SetDParam(0, v->trip_history.t[i].TBT);
 					    DrawString(r.left + WD_MATRIX_LEFT, r.right - WD_MATRIX_RIGHT, r.top + y, STR_TRIP_HISTORY_TBT, TC_BLACK, SA_RIGHT);
@@ -172,7 +172,7 @@ public:
 			    }
 			    break;
 		    case VTH_MATRIX_DAYCHANGE:
-			    for(int i = 0; i <= valid_rows; i++, y += FONT_HEIGHT_NORMAL + WD_MATRIX_TOP + WD_MATRIX_BOTTOM) {
+			    for(uint i = 0; i <= valid_rows; i++, y += FONT_HEIGHT_NORMAL + WD_MATRIX_TOP + WD_MATRIX_BOTTOM) {
 				    if (v->trip_history.t[i+1].date > 0) {
 					    SetDParam(0, v->trip_history.t[i].TBT_change);
 					    DrawString(r.left + WD_MATRIX_LEFT, r.right - WD_MATRIX_RIGHT, r.top + y,
