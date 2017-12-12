@@ -1235,10 +1235,10 @@ static void ViewportAddLandscape()
 				_vd.last_foundation_child[1] = NULL;
 
 				_tile_type_procs[tile_type]->draw_tile_proc(&tile_info);
-                                if (tile_info.tile != INVALID_TILE) {
-                                        DrawTileSelection(&tile_info);
-                                        DrawTileZoning(&tile_info);
-                                }
+				if (tile_info.tile != INVALID_TILE) {
+					DrawTileSelection(&tile_info);
+					DrawTileZoning(&tile_info);
+				}
 			}
 		}
 	}
@@ -3447,6 +3447,47 @@ calc_heightdiff_single_direction:;
 				ShowMeasurementTooltips(measure_strings_area[index], index, params);
 			}
 			break;
+
+		case VPM_A_B_LINE: { // drag an A to B line
+			TileIndex t0 = TileVirtXY(sx, sy);
+			TileIndex t1 = TileVirtXY(x, y);
+			uint dx = Delta(TileX(t0), TileX(t1)) + 1;
+			uint dy = Delta(TileY(t0), TileY(t1)) + 1;
+			byte index = 0;
+			uint64 params[5];
+			memset( params, 0, sizeof( params ) );
+
+			/* If dragging an area (eg dynamite tool) and it is actually a single
+			 * row/column, change the type to 'line' to get proper calculation for height */
+			style = (HighLightStyle)_thd.next_drawstyle;
+			if (style & HT_RECT) {
+				if (dx == 1) {
+					style = HT_LINE | HT_DIR_Y;
+				} else if (dy == 1) {
+					style = HT_LINE | HT_DIR_X;
+				}
+			}
+
+			int heightdiff = 0;
+
+			if (dx != 1 || dy != 1) {
+				heightdiff = CalcHeightdiff(style, 0, t0, t1);
+				params[index++] = DistanceManhattan(t0, t1);
+				params[index++] = sqrtl(dx * dx + dy * dy); //DistanceSquare does not like big numbers
+				
+			} else {
+				index += 2;
+			}
+			
+			params[index++] = DistanceFromEdge(t1);
+			//params[index++] = GetTileMaxZ(t1) / TILE_HEIGHT * TILE_HEIGHT_STEP; //changed ^^
+			params[index++] = GetTileMaxZ(t1) * TILE_HEIGHT_STEP;
+			params[index++] = heightdiff;
+			//Show always the measurement tooltip
+			GuiShowTooltips(_thd.GetCallbackWnd(),STR_MEASURE_DIST_HEIGHTDIFF, index, params, TCC_LEFT_CLICK);
+			break;
+		}
+
 
 		default: NOT_REACHED();
 	}
